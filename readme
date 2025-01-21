@@ -1,0 +1,4 @@
+1. make key pair
+2. github, setting, SSH keys, add key, paster .ssh/id_ras.pub content
+3. test ssh -T git@github.com
+4. change origin url : git remote set-url origin git@github.com:jally0203/mario.git
