@@ -38,17 +38,27 @@ win = 0
 credit = 0
 
 def onKeyDown(evt):
-  global state, thread_flag
+  global state, thread_flag, flash_flag, credit, win
   if evt.GetKeyCode() == wx.WXK_SPACE or evt.GetKeyCode() == wx.WXK_RETURN:
-    print('bet: ', getPlayBet())
-    if sum(getPlayBet()) > 0:
-      state = 1
+    if state == 0:
+      print('bet: ', getPlayBet())
+      if sum(getPlayBet()) > 0:
+        state = 1
+    elif state == 3:  
+      flash_flag = False
+      credit += win
+      win = 0
+      updateWin()
+      updateCredit()
+      state = 0  
   elif evt.GetKeyCode() == ord('q') or evt.GetKeyCode() == ord('Q'):
     thread_flag = False
+    flash_flag = False
     frame.Close()
   else:
-    for i in range(8):
-      bets[i].patch(evt)
+    if state == 0:
+      for i in range(8):
+        bets[i].patch(evt)
 
 def getPlayBet():
   global playBet
@@ -88,6 +98,52 @@ def putWinNCredit():
   for i in range(4):
     digitCredit.append(DigitX(panel, (340, 400-i*50)))
     
+def updateWin():
+  vs = str(win)
+  if win >= 1000:    
+    digitWin[0].update(int(vs[0]))
+    digitWin[1].update(int(vs[1]))
+    digitWin[2].update(int(vs[2]))
+    digitWin[3].update(int(vs[3]))
+  elif win >= 100:    
+    digitWin[0].update(0)
+    digitWin[1].update(int(vs[0]))
+    digitWin[2].update(int(vs[1]))
+    digitWin[3].update(int(vs[2]))  
+  elif win >= 10:    
+    digitWin[0].update(0)
+    digitWin[1].update(0)
+    digitWin[2].update(int(vs[0]))
+    digitWin[3].update(int(vs[1]))  
+  else:    
+    digitWin[0].update(0)
+    digitWin[1].update(0)
+    digitWin[2].update(0)
+    digitWin[3].update(int(vs[0]))  
+    
+    
+def updateCredit():
+  vs = str(credit)
+  if credit >= 1000:    
+    digitCredit[0].update(int(vs[0]))
+    digitCredit[1].update(int(vs[1]))
+    digitCredit[2].update(int(vs[2]))
+    digitCredit[3].update(int(vs[3]))
+  elif credit >= 100:    
+    digitCredit[0].update(0)
+    digitCredit[1].update(int(vs[0]))
+    digitCredit[2].update(int(vs[1]))
+    digitCredit[3].update(int(vs[2]))  
+  elif credit >= 10:    
+    digitCredit[0].update(0)
+    digitCredit[1].update(0)
+    digitCredit[2].update(int(vs[0]))
+    digitCredit[3].update(int(vs[1]))  
+  else:    
+    digitCredit[0].update(0)
+    digitCredit[1].update(0)
+    digitCredit[2].update(0)
+    digitCredit[3].update(int(vs[0]))      
     
 def allLightOn():
   for i in range(24):
@@ -103,21 +159,21 @@ def lightOn(n):
 def lightOff(n):  
   lights[n].clear()   
  
-def flash(n): 
+def flash(): 
   while flash_flag:
     lightOff(curLight)
     time.sleep(0.1)
     lightOn(curLight)  
     time.sleep(0.1)
    
-def lightRunOneCycle(start, speed):
-  global curLight
-  allLightOff()
-  for i in range(start, start + 24):
-    curLight = i % 24
-    lightOn(curLight)
-    time.sleep(speed)
-    lightOff(curLight)
+#def lightRunOneCycle(start, speed):
+#  global curLight
+#  allLightOff()
+#  for i in range(start, start + 24):
+#    curLight = i % 24
+#    lightOn(curLight)
+#    time.sleep(speed)
+#    lightOff(curLight)
 
 def STM2():
   global curLight, state, flash_flag, win
@@ -153,7 +209,16 @@ def STM2():
         win = award * playBet[fruit]
         print('award', award, 'fruit', fruit, 'total', win)
         flash_flag = True        
-        flash(curLight)        
+        thread_flash = threading.Thread(target = flash)
+        thread_flash.start()
+        state = 3
+      case 3:    # comparing
+        pass
+      case 4:    # collectin  
+        pass
+        
+        
+                
   print('thread stop')          
 
 
@@ -168,6 +233,9 @@ putLight2()
 putWinNCredit()
 bets[0].SetFocus()
 bets[0].Bind(wx.EVT_KEY_DOWN, onKeyDown)    
+
+credit = 10
+updateCredit()
 
 # STM
 thread_stm = threading.Thread(target = STM2)
