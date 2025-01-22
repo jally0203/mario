@@ -6,7 +6,7 @@ class FourDigits(wx.Panel):
   
   def __init__(self, parent, pos, size):
     super().__init__(parent)    
-    self.num = 9876
+    self.num = 0
     self.digits = []
     for i in range(3, -1, -1):
       self.digits.append(DigitX(self, (0, i * 50)))
@@ -24,9 +24,8 @@ class FourDigits(wx.Panel):
   def update(self):
     vs = str(self.num)
     zvs = vs.zfill(4)   # zero padding
-    print('in', zvs)
     for i in range(4):
-      self.digits[i].update(zvs[i])     
+      self.digits[i].update(int(zvs[i]))     
       
 class Credit(FourDigits):
 

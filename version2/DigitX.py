@@ -38,27 +38,19 @@ class DigitX(wx.Window):
     dc.Clear()
     dc.SetPen(wx.Pen(wx.YELLOW, 2))
     n = self.num
-    print(n)
     if n != 1 and n != 4:  # 2 3 5 6 7 8 9 0
-      print('1', n)
       dc.DrawLine(self.coor[0][0], self.coor[0][1], self.coor[1][0], self.coor[1][1])
     if n != 1 and n != 2 and n != 3 and n != 7:  # 4 5 6 8 9 0  
-      print('2', n)
       dc.DrawLine(self.coor[0][0], self.coor[0][1], self.coor[2][0], self.coor[2][1])
     if n != 5 and n != 6: # 1 2 3 4 7 8 9 0  
-      print('3', n)
       dc.DrawLine(self.coor[1][0], self.coor[1][1], self.coor[3][0], self.coor[3][1])
     if n != 1 and n != 7 and n != 0: # 2 3 4 5 6 8 9 
-      print('4', n)
       dc.DrawLine(self.coor[2][0], self.coor[2][1], self.coor[3][0], self.coor[3][1])
     if n == 2 or n == 6 or n == 8 or n == 0: # 2 6 8 0
-      print('5', n)
       dc.DrawLine(self.coor[2][0], self.coor[2][1], self.coor[4][0], self.coor[4][1])
     if n != 2 : # 1 3 4 5 6 7 8 9 0
-      print('6', n)
       dc.DrawLine(self.coor[3][0], self.coor[3][1], self.coor[5][0], self.coor[5][1])
     if n != 1 and n != 4 and n != 7: # 2 3 5 6 8 9 0
-      print('7', n)
       dc.DrawLine(self.coor[4][0], self.coor[4][1], self.coor[5][0], self.coor[5][1])
     
     
