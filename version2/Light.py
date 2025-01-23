@@ -9,18 +9,23 @@ class Light(wx.StaticBitmap):
     self.SetPosition(pos)
     self.SetSize(size)
     self.award = 0
-    self.fruit = 0
+    self.type = None
 
   def set(self):
     self.SetBitmap(self.bitmap_on)
   
   def clear(self):
     self.SetBitmap(self.bitmap_off)
-    
-  def setPair(self, award, fruit):
+        
+  def setAward(self, award):
     self.award = award
-    self.fruit = fruit
     
-  def getPair(self):  
-    return self.award, self.fruit
-      
+  def getAward(self):
+    return self.award
+    
+  def setType(self, type):
+    self.type = type
+    
+  def getType(self):
+    return self.type
+

@@ -5,7 +5,6 @@ class Bet(wx.BitmapButton):
   def __init__(self, parent, imgFile, award, key):
     self.bitmap = wx.Bitmap(imgFile, wx.BITMAP_TYPE_ANY)
     super().__init__(parent, bitmap=self.bitmap)
-    self.award = award
     self.myBet = 0
     self.myDigit = None
     self.keyAscii = ord(key)
@@ -51,4 +50,5 @@ class Bet(wx.BitmapButton):
     
   def setDigitH(self, digit):
     self.myDigitH = digit
+
 

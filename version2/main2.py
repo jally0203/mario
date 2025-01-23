@@ -8,6 +8,7 @@ from DigitX import DigitX
 from Light import Light
 from FourDigits import Credit, Win
 from State import State
+# from Type import Type
 
 # items
 bets = []
@@ -21,7 +22,7 @@ betImgs = ['dog.png', 'man.png', 'dog.png', 'man.png', 'dog.png', 'man.png', 'do
 awards = [5, 10, 15, 20, 20, 30, 40, 100]
 keys = ['8', '7', '6', '5', '4', '3', '2', '1']
 awards = [15, 20, 2, 0, 5, 2, 10, 20, 2, 40, 5, 2, 15, 30, 2, 0, 5, 2, 10, 20, 50, 100, 25, 5]
-fruits = [5, 3, 3, 0, 7, 6, 6, 4, 1, 1, 7, 5, 5, 2, 2, 0, 7, 6, 6, 4, 0, 0, 0, 7]
+types = [5, 3, 3, 0, 7, 6, 6, 4, 1, 1, 7, 5, 5, 2, 2, 0, 7, 6, 6, 4, 0, 0, 0, 7]
 # STM
 state = State.WAITING
 # bet and win
@@ -57,8 +58,9 @@ def putLight():
   for i in range(6, 0, -1):
     lights.append(Light(panel, bitmap_on, bitmap_off, (120, i*130+80)))
   for i in range(24):
-    lights[i].setPair(awards[i], fruits[i])
-
+    lights[i].setAward(awards[i])
+    lights[i].setType(types[i])
+    
 def getPlayBet():
   global playBet
   playBet = []
@@ -94,7 +96,13 @@ if __name__ == '__main__':
   bets[0].SetFocus()
   bets[0].Bind(wx.EVT_KEY_DOWN, onKeyDown)  
 
-  # STM
+  # threads
+  stm_thread = threading.Thread(target = STM)
+  credit_thread = threading.Thread(target = watch_credit)
+  flashing_thread = threading.Thread(target = flashing)
+  stm_thread.start()
+  credit_thread.start()
+  flashing_thread.start()
   
   # sevices
   frame.ShowFullScreen(True)

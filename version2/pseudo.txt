@@ -3,10 +3,10 @@ Bet: patch(evt), setAward, getAward, addBet, clearBet, getBet, setDigit
 FourDigits: setNum(n), getNum
   Credit:  
   Win: 
-Lights: set, clear, setAward, getAward, setType, getType, goStep(n), flash(n), halfFlash(callback)
+Lights: set, clear, setAward, getAward, setType, getType
 
-TYPE: APPLE, ORANGE, GUAVA, BELL, MELON, STAR, SEVEN, BAR25, BAR50, BAR100
-STATE: BETTING, RUNNING, FLASHING, COMPARING
+skip  TYPE: APPLE, ORANGE, GUAVA, BELL, MELON, STAR, SEVEN, BAR25, BAR50, BAR100
+STATE: WAITING, RUNNING, FLASHING, COMPARING
 
 keydown:
   NUM and BETTING: bet.patch(evt)
@@ -21,7 +21,7 @@ main:
   add lights
   
   match state
-    BETTING:      key NUM to add bet, key ENTER to RUNNING      
+    WAITING:      key NUM to add bet, key ENTER to RUNNING      
     RUNNING-1:    auto to FLASHING if award > 0, else to BETTING
     RUNNING-2:    multi award
     RUNNING-3:    goto BAR
@@ -29,4 +29,5 @@ main:
     COMPARING:    flash half leds, key ENTER to BETTING
     
   thread: CREDITING, Credit.start(credit)
+          flashing(n)
       
