@@ -8,7 +8,7 @@ from DigitX import DigitX
 from Light import Light
 from FourDigits import Credit, Win
 from State import State
-# from Type import Type
+from Running import Running
 
 # items
 bets = []
@@ -76,6 +76,8 @@ def onKeyDown(evt):
       if sum(getPlayBet()) > 0:
         state = State.RUNNING    
   elif evt.GetKeyCode() == ord('q') or evt.GetKeyCode() == ord('Q'):
+    running_thread.disable()
+    flashing_thread.disable()
     frame.Close()
   else:
     if state == State.WAITING:
@@ -97,12 +99,12 @@ if __name__ == '__main__':
   bets[0].Bind(wx.EVT_KEY_DOWN, onKeyDown)  
 
   # threads
-  stm_thread = threading.Thread(target = STM)
-  credit_thread = threading.Thread(target = watch_credit)
-  flashing_thread = threading.Thread(target = flashing)
-  stm_thread.start()
-  credit_thread.start()
+  running_thread = Running()
+  running_thread.start()
+  flashing_thread = Flashing()
   flashing_thread.start()
+  comparing_thread = Comparing()
+  comparing_thread.start()
   
   # sevices
   frame.ShowFullScreen(True)
