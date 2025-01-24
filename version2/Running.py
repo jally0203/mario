@@ -25,9 +25,9 @@ class Running(threading.Thread):
         print('Running thread stop')
         break
       if gv.state == State.RUNNING:
+        print('Running got the ball')
         target = random.randint(0, 23)
         step = random.randint(180, 200)
-        #print('before running: target', target, 'step', step, 'cur', curLight)
         n = step
         while n > 0:
           n -= 1
@@ -36,13 +36,13 @@ class Running(threading.Thread):
           gv.lights[gv.curLight].set()
           time.sleep(0.03)
           gv.lights[gv.curLight].clear()
-        while curLight != target:
+        while gv.curLight != target:
           gv.curLight += 1
           gv.curLight %= 24
           gv.lights[gv.curLight].set()
           time.sleep(0.3)
           gv.lights[gv.curLight].clear()
         gv.lights[gv.curLight].set()
-        #print('after running: target', target, 'step', step, 'cur', curLight)  
+        print('Running : target', target, 'step', step, 'cur', gv.curLight)  
         gv.state = State.FLASHING
        

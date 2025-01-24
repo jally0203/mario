@@ -60,7 +60,7 @@ def onKeyDown(evt):
   if evt.GetKeyCode() == wx.WXK_SPACE or evt.GetKeyCode() == wx.WXK_RETURN:    
     if gv.state == State.WAITING:
       gv.reset_flag = False
-      #print('bet: ', getPlayBet())      
+      print('bet: ', getPlayBet())      
       if sum(getPlayBet()) > 0:
         gv.state = State.RUNNING  
     elif gv.state == State.FLASHING:
@@ -109,7 +109,7 @@ if __name__ == '__main__':
   comparing_thread.start()
   
   # sevices
-  #frame.ShowFullScreen(True)
+  frame.ShowFullScreen(True)
   frame.Show()
   app.MainLoop()
 
