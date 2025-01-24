@@ -1,6 +1,8 @@
 import threading
 import random
+import time
 
+import global_var as gv
 from State import State
 
 class Comparing(threading.Thread):
@@ -16,18 +18,14 @@ class Comparing(threading.Thread):
     self.flag = False
     
   def run(self):
-    global state, lights, curLight, comparing_bet
+    print('Comparing is running')
     while True:
-      if !self.flag:
+      time.sleep(0.1)
+      if not self.flag:
         print('Comparing thread stop')
         break
-      state = State.WAITING
-      #if state == State.COMPARING:                      
-      #  if comparing_bet == ord('a'):
-      #    win *= 2
-      #  else:
-      #    win = 0
-      #    state = State.WAITING
+      gv.state = State.WAITING
+
         
         
         

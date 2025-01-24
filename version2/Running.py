@@ -1,6 +1,8 @@
 import threading
 import random
+import time
 
+import global_var as gv
 from State import State
 
 class Running(threading.Thread):
@@ -16,30 +18,31 @@ class Running(threading.Thread):
     self.flag = False
     
   def run(self):
-    global state, lights, curLight
+    print('Running is running')
     while True:
+      time.sleep(0.1)
       if not self.flag:
         print('Running thread stop')
         break
-      if state == State.RUNNING:
+      if gv.state == State.RUNNING:
         target = random.randint(0, 23)
         step = random.randint(180, 200)
         #print('before running: target', target, 'step', step, 'cur', curLight)
         n = step
         while n > 0:
           n -= 1
-          curLight += 1
-          curLight %= 24
-          lights[curLight].set()
+          gv.curLight += 1
+          gv.curLight %= 24
+          gv.lights[gv.curLight].set()
           time.sleep(0.03)
-          lights[curLight].clear()
+          gv.lights[gv.curLight].clear()
         while curLight != target:
-          curLight += 1
-          curLight %= 24
-          lights[curLight].set()
+          gv.curLight += 1
+          gv.curLight %= 24
+          gv.lights[gv.curLight].set()
           time.sleep(0.3)
-          lights[curLight].clear()
-        lights[curLight].set()
+          gv.lights[gv.curLight].clear()
+        gv.lights[gv.curLight].set()
         #print('after running: target', target, 'step', step, 'cur', curLight)  
-        state = State.FLASHING
+        gv.state = State.FLASHING
        

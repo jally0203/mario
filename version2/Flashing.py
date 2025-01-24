@@ -1,5 +1,7 @@
 import threading
+import time
 
+import global_var as gv
 from State import State
 
 class Flashing(threading.Thread):
@@ -15,25 +17,25 @@ class Flashing(threading.Thread):
     self.flag = False
     
   def getWinning(self):  
-    global lights, curLight, playBet
-    self.award = lights[curLight].getAward()
-    self.mtype = lights[curLight].getType()
-    return self.award * palyBet[self.mtype]
+    award = gv.lights[gv.curLight].getAward()
+    mtype = gv.lights[gv.curLight].getType()
+    return award * gv.palyBet[mtype]
     
   def run(self):
-    global state, lights, curLight, reset_flag
+    print('Flashing is running')
     while True:
-      if !self.flag:
+      time.sleep(0.1)
+      if not self.flag:
         print('Flashing thread stop')
         break
-      if state == State.FLASHING:
+      while gv.state == State.FLASHING:
         if self.getWinning() > 0:                     
-          lights[curLight].set()
+          gv.lights[gv.curLight].set()
           time.sleep(0.1)
-          lights[curLight].clear()
+          gv.lights[gv.curLight].clear()
           time.sleep(0.1)
         else:
-          reset_flag = True
-          state = State.WAITING
+          gv.reset_flag = True
+          gv.state = State.WAITING
       
             
