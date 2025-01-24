@@ -18,7 +18,7 @@ class Running(threading.Thread):
   def run(self):
     global state, lights, curLight
     while True:
-      if !self.flag:
+      if not self.flag:
         print('Running thread stop')
         break
       if state == State.RUNNING:

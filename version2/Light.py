@@ -11,7 +11,7 @@ class Light(wx.StaticBitmap):
     self.award = 0
     self.type = 0
 
-  def set(self):0
+  def set(self):
     self.SetBitmap(self.bitmap_on)
   
   def clear(self):
