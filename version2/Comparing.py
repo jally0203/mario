@@ -1,4 +1,5 @@
 import threading
+import random
 
 from State import State
 
@@ -15,13 +16,18 @@ class Comparing(threading.Thread):
     self.flag = False
     
   def run(self):
-    global state, lights, curLight
+    global state, lights, curLight, comparing_bet
     while True:
       if !self.flag:
-        print('Flashing thread stop')
+        print('Comparing thread stop')
         break
-      if state == State.FLASHING:                      
-        lights[curLight].set()
-        time.sleep(0.1)
-        lights[curLight].clear()
-        time.sleep(0.1)
+      state = State.WAITING
+      #if state == State.COMPARING:                      
+      #  if comparing_bet == ord('a'):
+      #    win *= 2
+      #  else:
+      #    win = 0
+      #    state = State.WAITING
+        
+        
+        

@@ -25,10 +25,12 @@ awards = [15, 20, 2, 0, 5, 2, 10, 20, 2, 40, 5, 2, 15, 30, 2, 0, 5, 2, 10, 20, 5
 types = [5, 3, 3, 0, 7, 6, 6, 4, 1, 1, 7, 5, 5, 2, 2, 0, 7, 6, 6, 4, 0, 0, 0, 7]
 # STM
 state = State.WAITING
+reset_flag = False
 # bet and win
 playBet = []
 credit = 10
 win = 0
+comparing_bet = 0
     
 def putBet():
   for i in range(8):
@@ -45,6 +47,12 @@ def putFourDigits():
   winDigit = Win(panel, (340, 600))
   creditDigit.setNum(credit)
   winDigit.setNum(win)
+  
+def collect_winning():
+  credit += win
+  win = 0
+  winDigit.setNum(win)
+  creditDigit.setNum(credit)
   
 def putLight():
   bitmap_off = wx.Bitmap('off.png', wx.BITMAP_TYPE_ANY)
@@ -69,18 +77,32 @@ def getPlayBet():
   return playBet  
 
 def onKeyDown(evt):
-  global state
-  if evt.GetKeyCode() == wx.WXK_SPACE or evt.GetKeyCode() == wx.WXK_RETURN:
+  global state, playBet, reset_flag
+  if evt.GetKeyCode() == wx.WXK_SPACE or evt.GetKeyCode() == wx.WXK_RETURN:    
     if state == State.WAITING:
-      print('bet: ', getPlayBet())
+      reset_flag = False
+      print('bet: ', getPlayBet())      
       if sum(getPlayBet()) > 0:
-        state = State.RUNNING    
+        state = State.RUNNING  
+    elif state == State.FLASHING:
+      collect_winning()
+      state = State.WAITING
   elif evt.GetKeyCode() == ord('q') or evt.GetKeyCode() == ord('Q'):
     running_thread.disable()
     flashing_thread.disable()
+    comparing_thread.disable()
     frame.Close()
+  elif evt.GetKeyCode() == ord('a') or evt.GetKeyCode() == ord('l'):
+    if state == State.FLASHING:
+      comparing_bet = evt.GetKeyCode()
+      state = State.COMPARING      
   else:
     if state == State.WAITING:
+      if reset_flag:
+        playBet = []
+        for i in range(8):
+          bets[i].clearBet()
+        reset_flag = False  
       for i in range(8):
         bets[i].patch(evt)
 
@@ -98,7 +120,7 @@ if __name__ == '__main__':
   bets[0].SetFocus()
   bets[0].Bind(wx.EVT_KEY_DOWN, onKeyDown)  
 
-  # threads
+  # threads, assume there's a token pass through 3 threads
   running_thread = Running()
   running_thread.start()
   flashing_thread = Flashing()

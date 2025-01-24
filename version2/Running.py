@@ -1,4 +1,5 @@
 import threading
+import random
 
 from State import State
 
@@ -21,24 +22,24 @@ class Running(threading.Thread):
         print('Running thread stop')
         break
       if state == State.RUNNING:
-          target = random.randint(0, 23)
-          step = random.randint(180, 200)
-          #print('before running: target', target, 'step', step, 'cur', curLight)
-          n = step
-          while n > 0:
-            n -= 1
-            curLight += 1
-            curLight %= 24
-            lights[curLight].set()
-            time.sleep(0.03)
-            lights[curLight].clear()
-          while curLight != target:
-            curLight += 1
-            curLight %= 24
-            lights[curLight].set()
-            time.sleep(0.3)
-            lights[curLight].clear()
+        target = random.randint(0, 23)
+        step = random.randint(180, 200)
+        #print('before running: target', target, 'step', step, 'cur', curLight)
+        n = step
+        while n > 0:
+          n -= 1
+          curLight += 1
+          curLight %= 24
           lights[curLight].set()
-          #print('after running: target', target, 'step', step, 'cur', curLight)  
-          state = State.FLASHING
+          time.sleep(0.03)
+          lights[curLight].clear()
+        while curLight != target:
+          curLight += 1
+          curLight %= 24
+          lights[curLight].set()
+          time.sleep(0.3)
+          lights[curLight].clear()
+        lights[curLight].set()
+        #print('after running: target', target, 'step', step, 'cur', curLight)  
+        state = State.FLASHING
        

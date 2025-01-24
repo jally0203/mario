@@ -18,10 +18,10 @@ class Flashing(threading.Thread):
     global lights, curLight, playBet
     self.award = lights[curLight].getAward()
     self.mtype = lights[curLight].getType()
-    return self.award * self.mtype
+    return self.award * palyBet[self.mtype]
     
   def run(self):
-    global state, lights, curLight
+    global state, lights, curLight, reset_flag
     while True:
       if !self.flag:
         print('Flashing thread stop')
@@ -33,6 +33,7 @@ class Flashing(threading.Thread):
           lights[curLight].clear()
           time.sleep(0.1)
         else:
+          reset_flag = True
           state = State.WAITING
       
             
