@@ -21,6 +21,7 @@ class Running(threading.Thread):
     print('Running is running')
     while True:
       time.sleep(0.1)
+      #print(self.flag, gv.state)
       if not self.flag:
         print('Running thread stop')
         break

@@ -20,6 +20,7 @@ class Flashing(threading.Thread):
     award = gv.lights[gv.curLight].getAward()
     mtype = gv.lights[gv.curLight].getType()
     print('Flashing: award', award, 'mtype', mtype, 'winning', award * gv.playBet[mtype])
+    gv.winDigit.setNum(award * gv.playBet[mtype])
     return award * gv.playBet[mtype]
     
   def run(self):
@@ -31,8 +32,8 @@ class Flashing(threading.Thread):
         break
       if gv.state == State.FLASHING:
         print('Flashing got the ball')
-        if self.getWinning() > 0:                     
-          while True:
+        if self.getWinning() > 0:     
+          while self.flag:
             gv.lights[gv.curLight].set()
             time.sleep(0.1)
             gv.lights[gv.curLight].clear()

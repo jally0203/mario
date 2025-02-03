@@ -1,6 +1,8 @@
 
 # global variables
 
+from State import State
+
 #layout
 bets = []
 digitsH = []
@@ -15,7 +17,7 @@ keys = ['8', '7', '6', '5', '4', '3', '2', '1']
 awards = [15, 20, 2, 0, 5, 2, 10, 20, 2, 40, 5, 2, 15, 30, 2, 0, 5, 2, 10, 20, 50, 100, 25, 5]
 types = [5, 3, 3, 0, 7, 6, 6, 4, 1, 1, 7, 5, 5, 2, 2, 0, 7, 6, 6, 4, 0, 0, 0, 7]
 # STM
-state = 0
+state = State.WAITING
 reset_flag = False
 # bet and win
 playBet = []

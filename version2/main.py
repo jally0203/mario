@@ -30,6 +30,7 @@ def putFourDigits():
   gv.winDigit.setNum(gv.win)
   
 def collect_winning():
+  gv.win = gv.winDigit.getNum()
   gv.credit += gv.win
   gv.win = 0
   gv.winDigit.setNum(gv.win)
@@ -62,14 +63,15 @@ def onKeyDown(evt):
       gv.reset_flag = False
       print('bet: ', getPlayBet())      
       if sum(getPlayBet()) > 0:
-        gv.state = State.RUNNING  
+        gv.state = State.RUNNING
     elif gv.state == State.FLASHING:
       collect_winning()
+      flashing_thread.disable()
       gv.state = State.WAITING
   elif evt.GetKeyCode() == ord('q') or evt.GetKeyCode() == ord('Q'):
     running_thread.disable()
     flashing_thread.disable()
-    comparing_thread.disable()
+    #comparing_thread.disable()
     frame.Close()
   elif evt.GetKeyCode() == ord('a') or evt.GetKeyCode() == ord('l'):
     if gv.state == State.FLASHING:
@@ -91,7 +93,7 @@ if __name__ == '__main__':
   frame = wx.Frame(None, size=(800, 600))
   panel = wx.Panel(frame)
   panel.SetBackgroundColour(wx.Colour(0, 0, 32))
-  state = State.WAITING
+  gv.state = State.WAITING
 
   # layout
   putBet()
@@ -105,8 +107,8 @@ if __name__ == '__main__':
   running_thread.start()
   flashing_thread = Flashing()
   flashing_thread.start()
-  comparing_thread = Comparing()
-  comparing_thread.start()
+  #comparing_thread = Comparing()
+  #comparing_thread.start()
   
   # sevices
   frame.ShowFullScreen(True)
